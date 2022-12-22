@@ -1,1 +1,1 @@
-# zwerl-discord
+# mod-bot
