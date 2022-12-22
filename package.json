@@ -1,0 +1,49 @@
+{
+  "name": "mod-bot",
+  "version": "1.0.0",
+  "description": "Discord moderation bot",
+  "main": "src/main.ts",
+  "author": "DownloadableFox <58178791+DownloadableFox@users.noreply.github.com>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "lint": "eslint src --ext .ts",
+    "lint:fix": "eslint src --ext .ts --fix",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate deploy",
+    "exec:rebuild": "docker-compose stop discord && docker-compose rm discord && docker-compose up -d --build discord",
+    "exec:db:console": "docker-compose exec postgres psql -h localhost -U postgres -d dev",
+    "exec:db:studio": "docker-compose exec discord yarn prisma studio -n 0.0.0.0 -p 8081",
+    "exec:db:migrate": "docker-compose exec discord yarn prisma migrate dev",
+    "clean": "rimraf dist",
+    "build": "tsc",
+    "start": "node dist/main.js | pino-pretty",
+    "deploy": "yarn prisma:migrate && yarn start",
+    "dev": "nodemon src/main.ts | pino-pretty"
+  },
+  "_moduleAliases": {
+    "@utils": "./dist/utils/",
+    "@events": "./dist/events/",
+    "@commands": "./dist/commands/",
+    "@services": "./dist/services/"
+  },
+  "dependencies": {
+    "@prisma/client": "4.7.1",
+    "discord.js": "^14.7.1",
+    "dotenv": "^16.0.3",
+    "module-alias": "^2.2.2",
+    "pino": "^8.7.0",
+    "pino-pretty": "^9.1.1",
+    "typescript": "^4.9.4"
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.12",
+    "@typescript-eslint/eslint-plugin": "^5.46.0",
+    "@typescript-eslint/parser": "^5.46.0",
+    "eslint": "^8.29.0",
+    "nodemon": "^2.0.20",
+    "prisma": "^4.7.1",
+    "rimraf": "^3.0.2",
+    "ts-node": "^10.9.1"
+  }
+}

@@ -1,0 +1,9 @@
+version: '3.7'
+services:
+  discord:
+    build: .
+    container_name: discord
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgres://${DB_USER}:${DB_PASSWORD}@postgres:5432/${DB_NAME}
