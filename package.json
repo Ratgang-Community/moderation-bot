@@ -19,7 +19,7 @@
     "build": "tsc",
     "start": "node dist/main.js | pino-pretty",
     "deploy": "yarn prisma:migrate && yarn start",
-    "dev": "nodemon src/main.ts | pino-pretty"
+    "dev": "nodemon --watch \"src/**\" --ext \"ts,json\" --exec \"yarn build && yarn start\" | pino-pretty"
   },
   "_moduleAliases": {
     "@utils": "./dist/utils/",
