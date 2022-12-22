@@ -1,5 +1,11 @@
 FROM node:lts-alpine
 
+ARG VERSION
+ENV VERSION=${VERSION}
+
+ARG COMMIT_SHA
+ENV COMMIT_SHA=${COMMIT_SHA}
+
 # Create app directory
 WORKDIR /usr/src/app
 

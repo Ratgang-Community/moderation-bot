@@ -3,10 +3,17 @@ import path from 'path';
 dotenv.config({ path: path.join(__dirname, '../../.env') });
 
 interface Config {
-    production: boolean;
     token: string;
     clientId: string;
     guildId: string;
+	meta: Meta;
+}
+
+interface Meta {
+	env: string;
+	development: boolean;
+	version: string;
+	commitSha: string;
 }
 
 export const get = (key: string, defaultValue?: string): string => {
@@ -26,11 +33,18 @@ export const getNumber = (key: string, defaultValue?: number) => {
 	return number;
 };
 
+const nodeEnv = get('NODE_ENV', 'development');
+
 const config: Config = {
-	production: get('NODE_ENV') === 'production',
 	token: get('TOKEN'),
 	clientId: get('CLIENT_ID'),
-	guildId: get('GUILD_ID')
+	guildId: get('GUILD_ID'),
+	meta: {
+		env: nodeEnv,
+		development: nodeEnv.toLowerCase() === 'development',
+		version: get('VERSION', 'development'),
+		commitSha: get('COMMIT_SHA', 'unknown'),
+	}
 };
 
 export default config;
