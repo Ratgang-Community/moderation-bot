@@ -4,6 +4,7 @@ import path from 'path';
 import { Client, Collection } from 'discord.js';
 import { Logger as LoggerType } from 'pino';
 
+import config from '@utils/config';
 import logger from '@utils/logger';
 import Command from '@global/command';
 import Event from '@global/event';
@@ -68,7 +69,7 @@ export class Module {
 			
 			for await (const file of commandFiles) {
 				try {
-					const { default: command }: { default: Command } = await import(path.join(this.dir, file));
+					const { default: command }: { default: Command } = await import(path.join(this.dir, 'commands', file));
 	
 					// check if it is really a command interface
 					if (!command.data || !command.execute) {
@@ -86,7 +87,9 @@ export class Module {
 					this.commands.set(command.data.name, command);
 					this.client.commands.set(command.data.name, command);
 				} catch (error) {
-					this.logger.warn(`Error while registering command ${file}, Skiping...`, error);
+					if (config.meta.development)
+						this.logger.error(error);
+					this.logger.warn(`Error while registering command ${file}, Skiping...`);
 				}
 			}
 		} catch (error) {
@@ -100,7 +103,7 @@ export class Module {
 
 			for await (const file of eventFiles) {
 				try {
-					const { default: event }: { default: Event } = await import(path.join(this.dir, file));
+					const { default: event }: { default: Event } = await import(path.join(this.dir, 'events', file));
 	
 					// check if it is really a event interface
 					if (!event.name || !event.execute) {
@@ -119,6 +122,8 @@ export class Module {
 
 					this.client.on(event.name, (...args) => event.execute(this.logger, ...args));
 				} catch (error) {
+					if (config.meta.development)
+						this.logger.error(error);
 					this.logger.warn(`Error while registering event ${file}, Skiping...`, error);
 				}
 			}	

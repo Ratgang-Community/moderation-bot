@@ -15,6 +15,8 @@ export const registerModules = async (client: Client) => {
 	logger.info('Registering modules...');
 	
 	client.modules = new Collection();
+	client.events = new Collection();
+	client.commands = new Collection();
 
 	const moduleFiles = await getModuleFiles();
 
@@ -44,10 +46,10 @@ export const registerModules = async (client: Client) => {
 };
 
 export const deployCommands = async (client: Client, rest: REST) => {
-	logger.info('Deploying commands to REST...');
 	
 	try {
 		const commands = client.commands.map(command => command.data.toJSON());
+		logger.info(`Deploying ${commands.length} commands to REST...`);
 
 		await rest.put(
 			Routes.applicationGuildCommands(config.clientId, config.guildId),
