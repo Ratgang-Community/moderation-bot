@@ -1,4 +1,10 @@
-FROM node:18-alpine
+FROM node:18-bullseye-slim
+
+ARG VERSION
+ENV VERSION=${VERSION}
+
+ARG COMMIT_SHA
+ENV COMMIT_SHA=${COMMIT_SHA}
 
 # Create app directory
 WORKDIR /usr/src/app

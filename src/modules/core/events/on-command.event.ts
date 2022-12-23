@@ -1,11 +1,12 @@
 import { CommandInteraction, Events } from 'discord.js';
-import { Event } from '@utils/events';
-import logger from '@utils/logger';
+import { Logger } from 'pino';
+import Event from '@global/event';
+import Module from '@global/module';
 
 const onCommandEvent: Event = {
 	name: Events.InteractionCreate,
 	once: false,
-	async execute(interaction: CommandInteraction) {
+	async execute(logger: Logger, interaction: CommandInteraction) {
 		if (!interaction.isChatInputCommand()) return;
 
 		const { client } = interaction;
@@ -17,8 +18,11 @@ const onCommandEvent: Event = {
 			return;
 		}
 
+		// find the command's module
+		const module = client.modules.find(module => module.commands.has(command.data.name)) as Module;
+
 		try {
-			await command.execute(interaction);
+			await command.execute(module.logger, interaction);
 		} catch (error) {
 			console.error(error);
 			await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });

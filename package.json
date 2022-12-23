@@ -23,9 +23,8 @@
   },
   "_moduleAliases": {
     "@utils": "./dist/utils/",
-    "@events": "./dist/events/",
-    "@commands": "./dist/commands/",
-    "@services": "./dist/services/"
+    "@global": "./dist/global/",
+    "@modules": "./dist/modules/"
   },
   "dependencies": {
     "@prisma/client": "4.7.1",
@@ -46,4 +45,4 @@
     "rimraf": "^3.0.2",
     "ts-node": "^10.9.1"
   }
-}
+} 
