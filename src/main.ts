@@ -7,7 +7,11 @@ import config from '@utils/config';
 import logger from '@utils/logger';
 
 const token = config.token;
-const production = config.production;
+
+logger.info('Starting bot...');
+logger.info(`Version: ${config.meta.version}`);
+logger.info(`Ref: ${config.meta.commitSha}`);
+logger.info(`Environment: ${config.meta.development ? 'Development': 'Production'}`);
 
 const client = new Client({
 	intents: [
@@ -18,10 +22,10 @@ const client = new Client({
 	],
 });
 
-const rest = new REST({version: '10'}).setToken(token);
+const rest = new REST({ version: '10' }).setToken(token);
 
 const main = async () => {
-	if (!production) logger.warn('Running in development mode!');
+	if (config.meta.development) logger.warn('Running in development mode!');
 
 	// register modules
 	await registerModules(client);
