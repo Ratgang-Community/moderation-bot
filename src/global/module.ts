@@ -57,10 +57,11 @@ export class Module {
 		this.events = new Collection();
 
 		this.logger = logger.child({ name: this.name });
+	}
 
-		this.registerCommands();
-		this.registerEvents();
-	
+	public async load() {
+		await this.registerCommands();
+		await this.registerEvents();
 	}
 
 	protected async registerCommands() {

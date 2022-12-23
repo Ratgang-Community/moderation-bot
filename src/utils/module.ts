@@ -32,13 +32,16 @@ export const registerModules = async (client: Client) => {
 				continue;
 			}
 			
-			client.modules.set(module.name, new module(client));
+			const instance = new module(client);
+			await instance.load();
+			
+			client.modules.set(module.name, instance);
 		} catch (error) {
 			if (config.meta.development) logger.error(error);
 			logger.warn(`There was an error while registering module "${file}"! Skipping...`);
 		}
 	}
-
+	logger.info('Deploying commands to REST...');
 	if (client.modules.size === 0)
 		logger.warn('No modules were registered!');
 	else
