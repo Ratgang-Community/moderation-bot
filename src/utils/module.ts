@@ -32,8 +32,7 @@ export const registerModules = async (client: Client) => {
 			
 			client.modules.set(module.name, new module(client));
 		} catch (error) {
-			if (!config.production)
-				logger.error(error);
+			if (config.meta.development) logger.error(error);
 			logger.warn(`There was an error while registering module "${file}"! Skipping...`);
 		}
 	}
