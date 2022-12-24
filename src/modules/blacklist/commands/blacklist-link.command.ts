@@ -30,7 +30,7 @@ const blacklistLinkCommand: Command = {
 		.setDMPermission(false),
 
 	async execute(logger: Logger, interaction: ChatInputCommandInteraction) {
-		interaction.deferReply({ ephemeral: true });
+		await interaction.deferReply({ ephemeral: true });
 
 		const link = interaction.options.getString('link') as string;
 		const remove = interaction.options.getBoolean('remove') || false;
