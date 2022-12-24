@@ -30,6 +30,7 @@ const blacklistLinkCommand: Command = {
 		.setDMPermission(false),
 
 	async execute(logger: Logger, interaction: ChatInputCommandInteraction) {
+		// TODO: Logging changes
 		await interaction.deferReply({ ephemeral: true });
 
 		const link = interaction.options.getString('link') as string;
@@ -54,7 +55,7 @@ const blacklistLinkCommand: Command = {
 			return;
 		}
 
-		await blockLink(link, blacklistPath, interaction.user.id);
+		await blockLink(link, blacklistPath, interaction.user);
 		await interaction.editReply({ content: 'Link was added to the blacklist!' });
 	}
 };

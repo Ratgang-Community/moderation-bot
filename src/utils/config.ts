@@ -7,6 +7,7 @@ interface Config {
     clientId: string;
     guildId: string;
 	meta: Meta;
+	logging: Logging
 }
 
 interface Meta {
@@ -14,6 +15,11 @@ interface Meta {
 	development: boolean;
 	version: string;
 	commitSha: string;
+}
+
+interface Logging {
+	user: string,
+	bot: string
 }
 
 export const get = (key: string, defaultValue?: string): string => {
@@ -44,6 +50,10 @@ const config: Config = {
 		development: nodeEnv.toLowerCase() === 'development',
 		version: get('VERSION', 'development'),
 		commitSha: get('COMMIT_SHA', 'unknown'),
+	},
+	logging: {
+		user: get('LOG_USER_CHANNEL'),
+		bot: get('LOG_USER_CHANNEL')
 	}
 };
 

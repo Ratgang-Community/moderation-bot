@@ -1,5 +1,6 @@
-import prisma from '@utils/prisma';
+import { User } from 'discord.js';
 import { URL } from 'url';
+import prisma from '@utils/prisma';
 
 export const transformLink = async (link: string, blacklistPath: boolean) => {
 	const url = new URL(link);
@@ -25,13 +26,13 @@ export const isLinkBlacklisted = async (raw: string, blacklistPath: boolean) => 
 };
 
 
-export const blockLink = async (raw: string, blacklistPath: boolean, blacklistedBy: string) => {
+export const blockLink = async (raw: string, blacklistPath: boolean, blacklistedBy: User) => {
 	const link = await transformLink(raw, blacklistPath);
 
 	await prisma.blacklistedLink.create({
 		data: {
 			link,
-			blacklistedBy
+			blacklistedBy: blacklistedBy.id
 		}
 	});
 
