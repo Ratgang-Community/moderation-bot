@@ -11,20 +11,19 @@ datasource db {
 }
 
 model Message {
-  id        String  @id @default(cuid())
+  id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  cotent      String
-  authorId    String
+  cotent    String
+  authorId  String
 }
 
-model BlacklistedLinks {
-  id        String  @id @default(cuid())
-  link      String
+model BlacklistedLink {
+  id            String   @id @default(cuid())
+  link          String   @unique
   blacklistedBy String
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
   @@map("blacklisted_links")
 }

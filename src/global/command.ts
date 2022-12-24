@@ -1,4 +1,4 @@
-import { Collection, CommandInteraction, SlashCommandBuilder } from 'discord.js';
+import { ChatInputCommandInteraction, Collection, CommandInteraction, SlashCommandBuilder } from 'discord.js';
 import { Logger } from 'pino';
 
 declare module 'discord.js' {
@@ -9,7 +9,7 @@ declare module 'discord.js' {
 
 interface Command {
     data: SlashCommandBuilder;
-    execute(logger: Logger, interaction: CommandInteraction): Promise<void>;
+    execute(logger: Logger, interaction: CommandInteraction | ChatInputCommandInteraction): Promise<void>;
 }
 
 export default Command;
