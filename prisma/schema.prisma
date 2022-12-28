@@ -11,11 +11,70 @@ datasource db {
 }
 
 model Message {
-  id        String   @id @default(cuid())
+  id String @id // Discord message ID
+
+  channelId String
+  authorId  String
+  isDeleted Boolean @default(false)
+
+  content MessageContent[]
+  states  MessageState[] // used to save specific states of a message
+  threads MessageRange[]
+  
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  cotent    String
-  authorId  String
+
+  @@map("messages")
+}
+
+model MessageContent {
+  id       String  @id @default(cuid())
+
+  parentId String // parent message ID
+  parent   Message @relation(fields: [parentId], references: [id])
+
+  // message data
+  content   String
+  createdAt DateTime @default(now())
+
+  states MessageState[] // used to save specific states of a message
+
+  @@map("message_contents")
+}
+
+// Used to store and retrieve a message at a specific point in time (for threads)
+model MessageState {
+  id String @id @default(cuid())
+
+  // original message
+  messageId String
+  message   Message @relation(fields: [messageId], references: [id])
+
+  // stored data
+  contentId String
+  content   MessageContent @relation(fields: [contentId], references: [id])
+
+  threadId String
+  thread   MessageRange @relation(fields: [threadId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("message_states")
+}
+
+model MessageRange {
+  id        String @id @default(cuid())
+  channelId String
+
+  messages MessageState[] // used to save specific states of a message
+
+  mainMessageId String?
+  mainMessage   Message? @relation(fields: [mainMessageId], references: [id])
+
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  @@map("threads")
 }
 
 model BlacklistedLink {
